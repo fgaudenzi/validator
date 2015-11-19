@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was written by the JAVA GraphML Library.-->
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+   <key id="label" for="node" attr.name="label" attr.type="string">label-d4-b0</key>
+  <key id="cond" for="edge" attr.name="cond" attr.type="string">True</key>
+  <graph id="G" edgedefault="undirected">
+    <node id="not_issued">
+      <data key="label">not issued</data>
+    </node>
+    <node id="issued">
+    <data key="label">issued</data>
+    </node>
+    <node id="suspended">
+    <data key="label">suspended</data>
+      
+    </node>
+    <node id="revoked">
+    <data key="label">revoked</data>
+      
+    </node>
+    <node id="expired">
+    <data key="label">expired</data>
+    </node>
+  
+    <edge id="e0" source="not_issued" target="issued">
+      <data key="cond">TC#0.9</data>
+    </edge>
+    <edge id="e1" source="issued" target="expired">
+      <data key="cond">Exp#date.now>22/09/2022</data>
+    </edge>
+    <edge id="e2" source="issued" target="suspended">
+      <data key="cond">TC#0.9#NOT AND SUSP#suspensiontime<1020</data>
+    </edge>
+    <edge id="e3" source="issued" target="revoked"/>
+    <edge id="e4" source="suspended" target="revoked">
+    	<data key="cond">Exp#date.now>22/09/2022</data>
+    </edge>
+
+    <edge id="e5" source="suspended" target="issued">
+      <data key="cond">TC#0.9</data>
+    </edge>
+     <edge id="e5" source="suspended" target="revoked">
+      <data key="cond">TC#0.9#not AND SUSP#suspensiontime<1020</data>
+    </edge>
+  </graph>
+</graphml>

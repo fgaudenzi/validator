@@ -1,0 +1,28 @@
+<ToCs>
+<ToC id="1">
+<mechanism>mechanism-d4-b0-d3-b0-d2-b0</mechanism>
+<service>platform</service>
+<event>event1</event>
+<event>event2</event>
+<event>event3</event>
+<event>event4</event>
+</ToC>
+<ToC id="2">
+<mechanism>mechanism-d4-b0-d3-b1-d2-b0</mechanism>
+<service>infrastructure</service>
+<event>event1</event>
+<event>event2</event>
+<event>event3</event>
+<event>event5</event>
+<event>event6</event>
+</ToC>
+<ToC id="3">
+<mechanism>mechanism-d4-b0-d3-b0-d2-b0</mechanism>
+<service>infrastructure</service>
+<event>event1</event>
+<event>event2</event>
+<event>event3</event>
+<event>event5</event>
+<event>event6</event>
+</ToC>
+</ToCs>
