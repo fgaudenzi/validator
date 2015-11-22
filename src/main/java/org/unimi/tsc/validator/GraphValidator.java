@@ -64,9 +64,9 @@ public class GraphValidator {
     		int i=0;
     		//System.out.println("System Permutation possibile:"+gi.getNumberOfPermutation());
     		for(i=0;i<gi.getNumberOfPermutation();i++){
-    			if(i%300==0)
+    			if(i%10000==0)
 					System.out.println(".");
-				if(i%5==0)
+				if(i%1000==0)
 					System.out.print(".");  
     			
 				//System.out.println("CHECKING PERMUTATION "+ i);
@@ -147,9 +147,9 @@ public class GraphValidator {
     		int i=0;
     		//System.out.println("System Permutation possibile:"+gi.getNumberOfPermutation());
     		for(i=0;i<gi.getNumberOfPermutation();i++){
-    			if(i%300==0)
+    			if(i%3000==0)
 					System.out.println(".");
-				if(i%5==0)
+				if(i%50==0)
 					System.out.print(".");  
     			
 				//System.out.println("CHECKING PERMUTATION "+ i);
@@ -227,8 +227,7 @@ public class GraphValidator {
 			}
     	    }
 
-		public ArrayList<ArrayList<Vertex>> bind(
-				String graphI,String nroot) {
+		public ArrayList<ArrayList<Vertex>> bind(String graphI,String nroot) {
 			
 			graphSTS gt;
     		Boolean result=false;
@@ -241,8 +240,10 @@ public class GraphValidator {
     		Vertex gtRoot = gt.getRoot();
     		Vertex giRoot = gi.getRoot();	
  //   		--- Comparison Mechanism ROOT 	---
-    		if(!Mechanism.compareMechanism(gtRoot.getProperty("mechanism").toString(),giRoot.getProperty("mechanism").toString()))
+    		if(!Mechanism.compareMechanism(gtRoot.getProperty("mechanism").toString(),giRoot.getProperty("mechanism").toString())){
+    			System.out.println("errore meccanismo NULL");
     			return null;
+    		}
     		System.out.println("ROOT - OK");
  //			--- Check Cardinality 			---  		
     		/*if(gt.getGraphI().entrySet().size()!=gi.getGraphI().size()){
@@ -257,9 +258,9 @@ public class GraphValidator {
     		int i=0;
     		//System.out.println("System Permutation possibile:"+gi.getNumberOfPermutation());
     		for(i=0;i<gi.getNumberOfPermutation();i++){
-    			if(i%300==0)
+    			if(i%10000==0)
 					System.out.println(".");
-				if(i%5==0)
+				if(i%1000==0)
 					System.out.print(".");  
     			
 				//System.out.println("CHECKING PERMUTATION "+ i);

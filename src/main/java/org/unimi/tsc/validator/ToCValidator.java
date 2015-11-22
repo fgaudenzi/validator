@@ -14,31 +14,25 @@ public class ToCValidator {
 		HashSet<ToC> instanceApp = instance;
 		template=TocFactory.getToCs(templateToCFile);
 		for(ToC t:template){
-			ToC toRemove=null;
+			boolean found=false;
 			for(ToC i:instance){
-				if(t.compare(i)){
 				
-					toRemove=i;
+				if(t.compare(i)){
+					found=true;
 					break;
 				}
 				
 			}
-			if(toRemove==null)
+			if(!found)
 				return false;
-			else{
-				try{
-				instanceApp.remove(toRemove);
-				}catch(Exception e){
-				
-				}
-			}
 			
 				
 		}
-		if(instanceApp.size()==0)
+		/*if(instanceApp.size()==0)
 		return true;
 		else
-		return false;
+		return false;*/
+		return true;
 		
 	}
 	public static void main(String argv[]) throws Exception {

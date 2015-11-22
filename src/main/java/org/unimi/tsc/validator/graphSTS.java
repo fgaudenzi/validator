@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -32,12 +33,12 @@ public class graphSTS {
 	private Paths allPaths;
 	private ArrayList<ArrayList<Integer>> permutation; 
 	private int lastPermutation;
-	
-	
+
+
 	public HashMap<Vertex, ArrayList<Edge>> getGraphI() {
 		return graphI;
 	}
-    
+
 	public ArrayList<ArrayList<Vertex>> getGraphI(int i) {
 		if(i==-1){
 			return this.allPaths.getAllPaths();
@@ -48,11 +49,11 @@ public class graphSTS {
 		for(int k=0;k<size;k++){
 			result.add(this.allPaths.getAllPaths().get(graph.get(k)));
 		}
-	
-		
+
+
 		return result;
 	}
-    
+
 
 
 	public Vertex getRoot() {
@@ -64,54 +65,54 @@ public class graphSTS {
 
 	public graphSTS(String gi,String root) throws IOException{
 		Graph graph = new TinkerGraph();
-	    GraphMLReader reader = new GraphMLReader(graph);
-	    this.graphI=new HashMap<Vertex, ArrayList<Edge>>(); 
-	    InputStream is = new BufferedInputStream(new FileInputStream(gi));
-	    reader.inputGraph(is);
-	    
-	   
-	   // System.out.println("Vertices of " + graph);
-	    for (Vertex v : graph.getVertices()) {
-		this.graphI.put(v, new ArrayList<Edge>());
-		if(v.getId().toString().equalsIgnoreCase(root)){
-			this.root=v;
-		}
-	
-	     /* System.out.println(vertex);
+		GraphMLReader reader = new GraphMLReader(graph);
+		this.graphI=new HashMap<Vertex, ArrayList<Edge>>(); 
+		InputStream is = new BufferedInputStream(new FileInputStream(gi));
+		reader.inputGraph(is);
+
+
+		// System.out.println("Vertices of " + graph);
+		for (Vertex v : graph.getVertices()) {
+			this.graphI.put(v, new ArrayList<Edge>());
+			if(v.getId().toString().equalsIgnoreCase(root)){
+				this.root=v;
+			}
+
+			/* System.out.println(vertex);
 	      for(String mechanism:vertex.getPropertyKeys()){
 	    	  System.out.println(mechanism+" value:"+vertex.getProperty(mechanism));
-	    	  
+
 	      }*/
-	    }
-	   // System.out.println("Edges of " + graph);
-	    for (Edge edge : graph.getEdges()) {
-	      ArrayList<Edge> app=this.graphI.get(edge.getVertex(Direction.OUT));
-	      app.add(edge);
-	      //System.out.println(edge);
-	      //System.out.print(edge.getVertex(Direction.OUT));
-	      //System.out.println(edge.getVertex(Direction.IN));
-	      
-	     }
-	     //System.out.println("RESULT:");
-	     //System.out.println("\n ROOT="+this.root);
-	     /*for(Entry<Vertex,ArrayList<Edge>> elem:this.graphI.entrySet()){
+		}
+		// System.out.println("Edges of " + graph);
+		for (Edge edge : graph.getEdges()) {
+			ArrayList<Edge> app=this.graphI.get(edge.getVertex(Direction.OUT));
+			app.add(edge);
+			//System.out.println(edge);
+			//System.out.print(edge.getVertex(Direction.OUT));
+			//System.out.println(edge.getVertex(Direction.IN));
+
+		}
+		//System.out.println("RESULT:");
+		//System.out.println("\n ROOT="+this.root);
+		/*for(Entry<Vertex,ArrayList<Edge>> elem:this.graphI.entrySet()){
 	    	 //System.out.println("vertice:"+elem.getKey());
 	    	 for(Edge ed:elem.getValue()){
 	    		 //System.out.println("edge to:"+ed.getVertex(Direction.IN));
 	    	 }
 	     }*/
-	     GremlinPipeline pipe = new GremlinPipeline();
-	    // GremlinPipeline pl=new  GremlinPipeline();
+		GremlinPipeline pipe = new GremlinPipeline();
+		// GremlinPipeline pl=new  GremlinPipeline();
 		//pipe.start(graph.getVertex(root)).bothV().loop(1,);     
-	     //.out("knows").property("name");
-	     //graph.v(A).both.loop(1){it.loops<=N && !(it.object.id in [A,B])}.filter{it.id==B}.path;
-		 
-	     
-	     
-	 
-		
+		//.out("knows").property("name");
+		//graph.v(A).both.loop(1){it.loops<=N && !(it.object.id in [A,B])}.filter{it.id==B}.path;
+
+
+
+
+
 		setAllPath();
-		
+
 		int[] num = new int[this.allPaths.getAllPaths().size()];
 		//int i=0;
 		ArrayList<ArrayList<Vertex>> allp=this.allPaths.getAllPaths();
@@ -123,19 +124,19 @@ public class graphSTS {
 		System.out.println("Permutations available:"+permutation.size());//+" -->"+permutation);	
 		ArrayList<ArrayList<Vertex>> printer = this.getGraphI(-1);
 		System.out.println("Path Avaiable:"+printer);
-		
+
 	}
-	
+
 	public void setAllPath(){
 		//System.out.println("SHOW ALL PATHS from root "+ this.root);
-		 
-		
-			 this.allPaths=getNext(this.root);
-			 //System.out.println("first DEEP done");
-		 
-		 
+
+
+		this.allPaths=getNext(this.root);
+		//System.out.println("first DEEP done");
+
+
 	}
-	
+
 	public Paths getNext(Vertex v){
 		ArrayList<Vertex> vs=getVertexsfromVertex(v);
 		if(vs.size()!=0){
@@ -144,7 +145,7 @@ public class graphSTS {
 				Paths p=getNext(newV);
 				newP.putOnTop(p,v);
 				//Paths newP=Paths.factoryPaths(p, newV);
-				
+
 			}
 			return newP;
 		}
@@ -156,7 +157,7 @@ public class graphSTS {
 			return p;
 		}
 		return null;
-	
+
 	}
 
 
@@ -167,9 +168,9 @@ public class graphSTS {
 		ArrayList<Edge> eds = graphI.get(v);
 		ArrayList<Vertex> vs = new ArrayList<Vertex>();
 		for(Edge e:eds){
-			 vs.add(e.getVertex(Direction.IN));
-			 
-		 }
+			vs.add(e.getVertex(Direction.IN));
+
+		}
 		return vs;
 	}
 
@@ -177,33 +178,38 @@ public class graphSTS {
 		// TODO Auto-generated method stub
 		return this.permutation.size();
 	}
-	
-	
+
+
 	public static HashMap<String,String> graphFromTemplate(String tgraphFile,String root,String outG){
 		String rootI=null;
 		HashMap<String,String> mapping=new HashMap<String,String>();
 		try {
-			GraphValidator v = new GraphValidator(tgraphFile,"n0");
+			GraphValidator v = new GraphValidator(tgraphFile,root);
 			HashMap<Vertex, ArrayList<Edge>> g = v.getGi().getGraphI();
-			
+
 			HashMap<String,Vertex> vertex=new HashMap<String,Vertex>();
 			Random randomG = new Random();
+			HashSet<String> ids=new HashSet<String>();
 			for (Entry<Vertex, ArrayList<Edge>> gv : g.entrySet()){
-				String newN="n"+String.valueOf(randomG.nextInt(100));
+				
+				String id=String.valueOf(randomG.nextInt(1000)+g.size());
+				while(!ids.add(id)){
+					id=String.valueOf(randomG.nextInt(1000)+g.size());
+				}
+				String newN="n"+id;
 				vertex.put(newN, gv.getKey());
 				if(gv.getKey().getId().toString().equalsIgnoreCase(root))
 					rootI=newN;
 				mapping.put(gv.getKey().getId().toString(),newN);
 				System.out.println("VECCHIO N:"+gv.getKey().getId().toString()+"    NUOVO N:"+newN);
 			}
-			
+
 			Graph graph = new TinkerGraph();
 			GraphMLWriter writer = new GraphMLWriter(graph);
 			//Vertex vv=new Vertex();
 			HashMap<String,Vertex> newVertex=new HashMap<String,Vertex>();
 			for (Entry<String, Vertex> gv : vertex.entrySet()){
 				Vertex ib = graph.addVertex(gv.getKey());
-				
 				ib.setProperty("mechanism",TocFactory.tocFromTemplate(gv.getValue().getProperty("mechanism").toString()));
 				newVertex.put(gv.getKey(), ib);
 			}
@@ -213,7 +219,7 @@ public class graphSTS {
 					Vertex vin = e.getVertex(Direction.IN);
 					for (Entry<String, Vertex> tofound : vertex.entrySet()){
 						if(vin.getId().toString().equalsIgnoreCase(tofound.getValue().getId().toString())){
-								vin=newVertex.get(tofound.getKey());
+							vin=newVertex.get(tofound.getKey());
 						}
 					}
 					//e.getVertex(direction);
@@ -223,26 +229,27 @@ public class graphSTS {
 			OutputStream os = new FileOutputStream(outG);
 			writer.outputGraph(graph,os);
 			//graph.addVertex(new Vertex())
-					
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return mapping;
 	}
-	
+
 	public static void main(String[] args) {
 		//graphFromTemplate("/Users/iridium/Documents/workspace/validator/graphT2.xml");
 	}
 
 	public static boolean validateValidation(
 			HashMap<String, String> nodeMapped, GraphValidator gv) {
+
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public ArrayList<Integer> getOrder() {
-		
+
 		return permutation.get(this.lastPermutation);
 	}
 	public ArrayList<Integer> getOrder(int i){
@@ -251,13 +258,33 @@ public class graphSTS {
 
 	public void setLastPermutation(int i) {
 		this.lastPermutation=i;
-		
+
 	}
 
 	public int getLastPermutation() {
 		return lastPermutation;
 	}
 
-	
-	
+	public static boolean validateValidation(
+			HashMap<String, String> nodeMapped,
+			ArrayList<ArrayList<Vertex>> psInstance,
+			ArrayList<ArrayList<Vertex>> psTemplate) {
+		for(int i=0;i<psInstance.size();i++){
+			ArrayList<Vertex> pInstance=psInstance.get(i);
+			ArrayList<Vertex> pTemplate=psTemplate.get(i);
+			for(int k=0;k<pInstance.size();k++){
+				Vertex vt=pTemplate.get(k);
+				Vertex vi=pInstance.get(k);
+				String vOriginal=nodeMapped.get(vt.getId().toString());
+				System.out.println("Controllo --> vtemplate="+vt.getId().toString()+" vi dal bind originale -->"+vOriginal+" v mappata -->"+vi.getId().toString());
+				if(!vOriginal.equalsIgnoreCase(vi.getId().toString()))
+					return false;
+			}
+		}
+
+		return true;
+	}
+
+
+
 }

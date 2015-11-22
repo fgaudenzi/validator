@@ -1,5 +1,7 @@
 package org.unimi.tsc.validator;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -13,12 +15,12 @@ import com.tinkerpop.blueprints.Vertex;
 
 public class InstanceFactory {
 
-	public static void createInstance(String propertyT,String tocT,String graphT,String evidenceT,String lifeCycleT) throws IOException{
+	public static boolean createInstance(String propertyT,String tocT,String graphT,String evidenceT,String lifeCycleT, String dir,String id) throws IOException, InterruptedException{
 		String property;
 		String rootNodeI;
-		String graphI="/Users/iridium/Documents/workspace/validator/nuovoGrafo.xml";
-		String evidenceFI="/Users/iridium/Documents/workspace/validator/nuovoEvidence.xml";
-		String tocI="/Users/iridium/Documents/workspace/validator/nuovoToc.xml";
+		String graphI=dir+"/IstanceGraph-"+id+".xml";
+		String evidenceFI=dir+"/IstanceEvidence-"+id+".xml";
+		String tocI=dir+"/IstanceToC-"+id+".xml";
 		PrintWriter writer = new PrintWriter(graphI);
 		writer.print("");
 		writer.close();
@@ -37,12 +39,15 @@ public class InstanceFactory {
 		HashMap<String, String> nodeMapped = graphSTS.graphFromTemplate(graphT,"n0",graphI);
 		rootNodeI=nodeMapped.get("n0");
 		GraphValidator gv=new GraphValidator(graphI,rootNodeI);
-		if(graphSTS.validateValidation(nodeMapped,gv)){
-			System.out.println("error in validation");
-			return;
-		}
+		
 		//associazione tra tutti i path del template e tutti i path di gv(grago instanza) - Restituisce un array di path del template posizionati nello stesso ordine dei path dell'istanza
 		ArrayList<ArrayList<Vertex>> paths=gv.bind(graphT,"n0");
+		Thread.sleep(10000);
+		if(!graphSTS.validateValidation(nodeMapped,paths,new graphSTS(graphT,"n0").getGraphI(-1))){
+			System.out.println("error in validation");
+			return false;
+		}
+		
 		System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\nCreated Instance from template");
 		System.out.println("Property OLD:"+propertyT+" NEW:"+property);
 		ArrayList<Evidence> templateEvidences = EvidenceFactory.getEvidencesI(evidenceT);
@@ -86,6 +91,10 @@ public class InstanceFactory {
 		HashMap<Vertex, ArrayList<Edge>> verticiTemplate =gt.getGraphI();
 		System.out.println("\n\n\n\n\n*******************************************************************************");
 		System.out.println("NODO RADICE ISTANCE:"+rootNodeI);
+		//File froot=new File(dir+"/root-"+id+".pt");
+		FileWriter rootwriter = new FileWriter(dir+"/root-"+id+".pt",false);
+        rootwriter.write(rootNodeI);
+        rootwriter.close();
 		for(Entry<String, String> n:nodeMapped.entrySet()){
 			String nodoI,nodoT;
 			String meccanismoI="";
@@ -121,9 +130,12 @@ public class InstanceFactory {
 		}
 		 
 	}
+		for(int i=0;i<10;i++)
+			System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+		return true;
 	}
-	public static void main(String[] args) throws IOException {
-		InstanceFactory.createInstance("property-d8-b0-d7-b0-d6-b5-d5-b1", "/Users/iridium/Documents/workspace/validator/ToCt.xml", "/Users/iridium/Documents/workspace/validator/graphT2.xml", "/Users/iridium/Documents/workspace/validator/evidenceTemplate.xml","");
+	public static void main(String[] args) throws Exception {
+		InstanceFactory.createInstance("property-d8-b0-d7-b0-d6-b5-d5-b1", "/Users/iridium/Documents/workspace/validator/ToCt.xml", "/Users/iridium/Documents/workspace/validator/graphT2.xml", "/Users/iridium/Documents/workspace/validator/evidenceTemplate.xml",null,"/Users/iridium/Documents/workspace/validator","1");
 	}
 
 }

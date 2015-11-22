@@ -5,14 +5,15 @@ import java.util.ArrayList;
 public class Mechanism {
 
 	public static boolean compareMechanism(String tMechanism, String iMechanism) {
-		BaseXOntologyManager app = new BaseXOntologyManager("localhost", 1984, "admin", "admin", "mechanism");
-    	ArrayList<String> result2;
+		BaseXOntologyManager app = new BaseXOntologyManager(BasexFactory.getHost(), 1984, "admin", "admin", "mechanism");
+		//BaseXOntologyManager app=BasexFactory.getBasex();
+		ArrayList<String> result2;
 		//System.out.println("COMPARING:"+tMechanism+" WITH "+iMechanism);
     	try {
 			result2 = app.getSubClasses("/", tMechanism, false);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Template M:"+tMechanism+" not compatible with Instance M:"+iMechanism);
+			//System.out.println("Template M:"+tMechanism+" not compatible with Instance M:"+iMechanism);
 			// TODO Auto-generated catch block
 			return false;
 		}
@@ -24,7 +25,7 @@ public class Mechanism {
     		if(toprint.equalsIgnoreCase(iMechanism))
     			return true;
     	}
-    	System.out.println("Template M:"+tMechanism+" not compatible with Instance M:"+iMechanism);
+    	//System.out.println("Template M:"+tMechanism+" not compatible with Instance M:"+iMechanism);
     	return false;
 	}
 	public static void main( String[] args )

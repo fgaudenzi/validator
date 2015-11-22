@@ -6,8 +6,9 @@ public class Property {
 
 	
 	public static Boolean validatyChecherProperty(String pTemplate,String pInstance){
-    	BaseXOntologyManager app = new BaseXOntologyManager("localhost", 1984, "admin", "admin", "property");
-    	ArrayList<String> result2;
+    	BaseXOntologyManager app = new BaseXOntologyManager(BasexFactory.getHost(), 1984, "admin", "admin", "property");
+		//BaseXOntologyManager app=BasexFactory.getBasex();
+		ArrayList<String> result2;
 		try {
 			result2 = app.getSubClasses("/", pTemplate, false);
 		} catch (Exception e) {

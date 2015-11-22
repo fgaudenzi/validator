@@ -24,6 +24,7 @@ public class BaseXOntologyManager{
 	private final String USERNAME;
 	private final String ADDRESS;
 	private final String DBNAME;
+	private BaseXClient c=null;
 	
 	// private BaseXClient session;
 
@@ -36,12 +37,13 @@ public class BaseXOntologyManager{
 	 * @param dbName The db Name
 	 */
 	public BaseXOntologyManager(String address, int port, String username,
-			String password, String dbName) {
+			String password, String dbName){//,boolean connected) {
 		this.ADDRESS = address;
 		this.PORT = port;
 		this.USERNAME = username;
 		this.PASSWORD = password;
 		this.DBNAME = dbName;
+		//this.c = this.getOpenConnection();
 	}
 
 	/**
@@ -59,7 +61,11 @@ public class BaseXOntologyManager{
 	}
 
 	public ArrayList<String> getAbstract() {
-		BaseXClient client = this.getOpenConnection();
+		BaseXClient client;
+		//if(c==null)
+		 client = this.getOpenConnection();
+		//else
+		//	client=this.c;
 
 		if (client != null) {
 			ArrayList<String> result = new ArrayList<String>();
@@ -107,7 +113,7 @@ public class BaseXOntologyManager{
 
 		if (client != null) {
 			if(!checkExistence(element))
-				throw new Exception("notFound");
+				throw new Exception("notFound"+element);
 			ArrayList<String> result = new ArrayList<String>();
 			String input = null;
 
@@ -159,7 +165,7 @@ public class BaseXOntologyManager{
 				}
 			}
 		}else{
-			System.out.println("CLIEN NULL");
+			System.out.println("CLIENT NULL");
 		}
 		return null;
 	}

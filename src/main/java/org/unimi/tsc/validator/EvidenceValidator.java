@@ -46,14 +46,14 @@ public class EvidenceValidator {
 			ArrayList<Evidence> toRemove=new ArrayList<Evidence>();
 			for(Evidence et:evsT){
 				if(et.compare(ei)){
-					System.out.println("Evidence Template Mappata su Evidence Instanza");
-					System.out.println("\nTEMPLATE:"+et);
-					System.out.println("\nINSTANZA:"+ei);
+					//System.out.println("Evidence Template Mappata su Evidence Instanza");
+					//System.out.println("\nTEMPLATE:"+et);
+					//System.out.println("\nINSTANZA:"+ei);
 					toRemove.add(ei);
 				}
 			}
 			if(toRemove.size()==0){
-				System.out.println("Evidence in Instance not compatible with Template Test Cases");
+				//System.out.println("Evidence in Instance not compatible with Template Test Cases");
 				return false;
 			}else{
 				try{

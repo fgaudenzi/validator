@@ -170,7 +170,8 @@ public class EvidenceFactory {
 	
 	public static void writeEvidenceFromTemplate(ArrayList<Evidence> allEvidence,String file){
 		try{
-			BaseXOntologyManager basex = new BaseXOntologyManager("localhost", 1984, "admin", "admin", "mechanism");
+			BaseXOntologyManager basex = new BaseXOntologyManager(BasexFactory.getHost(), 1984, "admin", "admin", "mechanism");
+			//BaseXOntologyManager basex=BasexFactory.getBasex();
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -296,9 +297,10 @@ public class EvidenceFactory {
 		}
 	}
 
-	public static void writeEvidence(ArrayList<ArrayList<Vertex>> allpaths,String file){
+	public static void writeEvidence(ArrayList<ArrayList<Vertex>> allpaths,String file,int nTC){
 		try {
-			BaseXOntologyManager basex = new BaseXOntologyManager("localhost", 1984, "admin", "admin", "mechanism");
+			BaseXOntologyManager basex = new BaseXOntologyManager(BasexFactory.getHost(), 1984, "admin", "admin", "mechanism");
+			//BaseXOntologyManager basex=BasexFactory.getBasex();
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -313,8 +315,13 @@ public class EvidenceFactory {
 			for(int j=allpaths.size()-1;j>=0;j--){
 				ArrayList<Vertex> path=allpaths.get(j);
 				pathC++;
-				int nTCperPath=randomGenerator.nextInt(4);
-				System.out.println("NUMERO DI TESTCASE PER PATH "+pathC+"="+nTCperPath);
+				int nTCperPath;
+				if(nTC==0){
+				nTCperPath=randomGenerator.nextInt(4);
+				}else{
+					nTCperPath=nTC;
+				}
+				//System.out.println("NUMERO DI TESTCASE PER PATH "+pathC+"="+nTCperPath);
 				
 				for(int k=0;k<nTCperPath;k++){
 					// testcase elements
@@ -351,6 +358,7 @@ public class EvidenceFactory {
 						Element input=doc.createElement("input");
 
 						String domainN=basex.getDomain(v.getProperty("mechanism").toString());
+						//System.out.println("DOMINIO di"+v.getProperty("mechanism").toString()+" -->"+domainN);
 						String domainI=String.valueOf(randomGenerator.nextInt(Integer.parseInt(domainN)));
 						String domainO=String.valueOf(randomGenerator.nextInt(Integer.parseInt(domainN)));
 						Element key=doc.createElement("key");
@@ -409,7 +417,7 @@ public class EvidenceFactory {
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
-			StreamResult result = new StreamResult(new File("/Users/iridium/Documents/workspace/validator/"+file+".xml"));
+			StreamResult result = new StreamResult(new File(file));
 
 			// Output to console for testing
 			// StreamResult result = new StreamResult(System.out);
@@ -425,6 +433,150 @@ public class EvidenceFactory {
 		}
 	}
 
+	
+	
+	
+	
+	public static void writeEvidenceT(ArrayList<ArrayList<Vertex>> allpaths,String file,int nTC){
+		try {
+			BaseXOntologyManager basex = new BaseXOntologyManager(BasexFactory.getHost(), 1984, "admin", "admin", "mechanism");
+			//BaseXOntologyManager basex=BasexFactory.getBasex();
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+			// root elements
+			Document doc = docBuilder.newDocument();
+
+
+			Element rootElement = doc.createElement("allEvidences");
+			doc.appendChild(rootElement);
+			int pathC=-1;
+			Random randomGenerator = new Random();
+			for(int j=0;j<allpaths.size();j++){
+				ArrayList<Vertex> path=allpaths.get(j);
+				pathC++;
+				int nTCperPath;
+				if(nTC==0){
+				nTCperPath=randomGenerator.nextInt(4);
+				}else{
+					nTCperPath=nTC;
+				}
+				//System.out.println("NUMERO DI TESTCASE PER PATH "+pathC+"="+nTCperPath);
+				
+				for(int k=0;k<nTCperPath;k++){
+					// testcase elements
+					Element testcase = doc.createElement("evidences");
+					Attr attrPath = doc.createAttribute("path");
+
+					//TODO path parameter
+					attrPath.setValue(String.valueOf(pathC));
+					testcase.setAttributeNode(attrPath);
+					
+
+					//for each state
+					int l=path.size()-1;
+					for(int z=l;z>=0;z--){
+						Vertex v=path.get(z);
+						Element evidence=doc.createElement("evidence");
+
+
+
+						Element mechanism=doc.createElement("mechanism");
+						//TODO meccanismo parameter
+						mechanism.appendChild(doc.createTextNode(v.getProperty("mechanism").toString()));
+						evidence.appendChild(mechanism);
+
+						Element state=doc.createElement("state");
+						//TODO stato parameter
+						state.appendChild(doc.createTextNode(v.getId().toString()));
+						evidence.appendChild(state);
+
+						Element inputs=doc.createElement("inputs");
+						evidence.appendChild(inputs);
+
+
+						Element input=doc.createElement("input");
+
+						String domainN=basex.getDomain(v.getProperty("mechanism").toString());
+						//System.out.println("DOMINIO di"+v.getProperty("mechanism").toString()+" -->"+domainN);
+						String domainI=String.valueOf(randomGenerator.nextInt(Integer.parseInt(domainN)));
+						String domainO=String.valueOf(randomGenerator.nextInt(Integer.parseInt(domainN)));
+						Element key=doc.createElement("key");
+						//TODO key parameter
+						key.appendChild(doc.createTextNode("key"));
+						input.appendChild(key);
+
+						Element value=doc.createElement("value");
+						//TODO value parameter
+						value.appendChild(doc.createTextNode(UUID.randomUUID().toString()));
+						input.appendChild(value);
+
+						Element domain=doc.createElement("domain");
+						//TODO value parameter
+						domain.appendChild(doc.createTextNode("d"+domainI));
+						input.appendChild(domain);
+						inputs.appendChild(input);
+
+
+
+						Element outputs=doc.createElement("expectedOutput");
+						
+						//for each output
+						Element output=doc.createElement("output");
+
+
+						Element keyo=doc.createElement("key");
+						//TODO key parameter
+						keyo.appendChild(doc.createTextNode("key"));
+						output.appendChild(keyo);
+
+						Element valueo=doc.createElement("value");
+						//TODO value parameter
+						valueo.appendChild(doc.createTextNode(UUID.randomUUID().toString()));
+						output.appendChild(valueo);
+
+						Element domaino=doc.createElement("domain");
+						//TODO value parameter
+						domaino.appendChild(doc.createTextNode("d"+domainO));
+						output.appendChild(domaino);
+						outputs.appendChild(output);
+						evidence.appendChild(outputs);	
+
+
+						testcase.appendChild(evidence);
+
+					}
+
+					rootElement.appendChild(testcase);
+				}
+			}
+
+
+
+			// write the content into xml file
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(doc);
+			StreamResult result = new StreamResult(new File(file));
+
+			// Output to console for testing
+			// StreamResult result = new StreamResult(System.out);
+
+			transformer.transform(source, result);
+
+			System.out.println("File saved!");
+
+		} catch (ParserConfigurationException pce) {
+			pce.printStackTrace();
+		} catch (TransformerException tfe) {
+			tfe.printStackTrace();
+		}
+	}
+
+	
+	
+	
+	
 	public static void main(String[] args) throws IOException {
 		/*ArrayList<Evidence> evs=EvidenceFactory
 			.getEvidencesI("/Users/iridium/Documents/workspace/validator/evidenceT.xml");
@@ -443,7 +595,7 @@ public class EvidenceFactory {
 		//CREATE EVIDENCE
 		GraphValidator validator = new GraphValidator("/Users/iridium/Documents/workspace/validator/graphT2.xml","n0");
 		
-		writeEvidence(validator.getGi().getGraphI(-1),"evidenceTemplate");
+		writeEvidence(validator.getGi().getGraphI(-1),"/Users/iridium/Documents/workspace/validator/evidenceTemplateMain.xml",0);
 		
 		
 		

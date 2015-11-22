@@ -80,8 +80,9 @@ public class TocFactory {
 	}
 	
 	static public String tocFromTemplate(String m){
-		BaseXOntologyManager app = new BaseXOntologyManager("localhost", 1984, "admin", "admin", "mechanism");
-    	ArrayList<String> result2=null;
+		BaseXOntologyManager app = new BaseXOntologyManager(BasexFactory.getHost(), 1984, "admin", "admin", "mechanism");
+		//BaseXOntologyManager app=BasexFactory.getBasex();
+		ArrayList<String> result2=null;
 		try {
 			result2 = app.getSubClasses("/", m, false);
 			Random randomG = new Random();
@@ -144,7 +145,7 @@ public class TocFactory {
 						break;
 				}
 			}
-			System.out.println(tocsI);
+			//System.out.println(tocsI);
 			ArrayList<ToC> result=new ArrayList<ToC>();
 			/*for(Entry<String, ToC> t:tocsI.entrySet()){
 				result.add(t.getValue());
@@ -221,8 +222,9 @@ public class TocFactory {
 	}
 
 	public static String randomMechanism() {
-		BaseXOntologyManager app = new BaseXOntologyManager("localhost", 1984, "admin", "admin", "mechanism");
-    	ArrayList<String> result2=null;
+		BaseXOntologyManager app = new BaseXOntologyManager(BasexFactory.getHost(), 1984, "admin", "admin", "mechanism");
+		//BaseXOntologyManager app=BasexFactory.getBasex();
+		ArrayList<String> result2=null;
 		try {
 			result2 = app.getSubClasses("/", "mechanism-d4-b0", false);
 			Random randomG = new Random();
@@ -248,13 +250,13 @@ public class TocFactory {
 		//return null;
 	}
 
-	public static boolean writeToFileTocs(ToC[] ts) {
+	public static boolean writeToFileTocs(ToC[] ts, String dest) {
 		ArrayList<ToC> t=new ArrayList<ToC>();
 		for(ToC t1:ts){
 			t.add(t1);
 		}
 		try {
-			writeToFile(t,"/Users/iridium/Documents/workspace/validator/createdTtoc.xml");
+			writeToFile(t,dest);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

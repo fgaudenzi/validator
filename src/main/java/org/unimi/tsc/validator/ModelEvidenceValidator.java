@@ -59,7 +59,7 @@ public class ModelEvidenceValidator {
 		boolean evid=this.ev.CompareEvidences(evidenceTemplateF,pathsOrderInstance);
 		System.out.println("RISULTATO evidence:"+evid);
 		if(evid)
-			return false;
+			return true;
 	}
 		//if(!evid)
 		//	return false;

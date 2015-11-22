@@ -45,8 +45,9 @@ public class PropertyBuilder {
 	}
 
 	static public String propertyFromTemplate(String p){
-		BaseXOntologyManager app = new BaseXOntologyManager("localhost", 1984, "admin", "admin", "property");
-    	ArrayList<String> result2=null;
+		BaseXOntologyManager app = new BaseXOntologyManager(BasexFactory.getHost(), 1984, "admin", "admin", "property");
+		//BaseXOntologyManager app=BasexFactory.getBasex();
+		ArrayList<String> result2=null;
 		try {
 			result2 = app.getSubClasses("/", p, false);
 			Random randomG = new Random();
