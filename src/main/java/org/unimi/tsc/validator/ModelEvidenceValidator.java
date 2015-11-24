@@ -15,10 +15,9 @@ public class ModelEvidenceValidator {
 	}
 	
 	public boolean validate(String modelTemplateF,String root,String evidenceTemplateF){
+		String timeC="INIT MODEL:"+String.valueOf(System.nanoTime()/1000)+"\n";
 		ArrayList<Integer> modelindex=gv.compareModel2(modelTemplateF, root);
-		
-		
-		
+		timeC+="END MODEL:"+String.valueOf(System.nanoTime()/1000)+"\n";
 		graphSTS gt=null;
 		try {
 			gt = new graphSTS(modelTemplateF,root);
@@ -26,6 +25,7 @@ public class ModelEvidenceValidator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		ArrayList<ArrayList<Vertex>> toPrint = gv.getGi().getGraphI(-1);
 		for(ArrayList<Vertex>vv:toPrint){
 			for(Vertex v:vv) System.out.print(" "+v.getId().toString());
@@ -55,8 +55,9 @@ public class ModelEvidenceValidator {
 		
 			ArrayList<Integer> pathsOrderInstance = gv.getGi().getOrder(modelI.intValue());
 		
-
+		timeC+="INIT EVIDENCE:"+String.valueOf(System.nanoTime()/1000)+"\n";	
 		boolean evid=this.ev.CompareEvidences(evidenceTemplateF,pathsOrderInstance);
+		timeC+="END EVIDENCE:"+String.valueOf(System.nanoTime()/1000)+"\n";	
 		System.out.println("RISULTATO evidence:"+evid);
 		if(evid)
 			return true;

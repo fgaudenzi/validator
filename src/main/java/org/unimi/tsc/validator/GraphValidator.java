@@ -64,9 +64,9 @@ public class GraphValidator {
     		int i=0;
     		//System.out.println("System Permutation possibile:"+gi.getNumberOfPermutation());
     		for(i=0;i<gi.getNumberOfPermutation();i++){
-    			if(i%10000==0)
+    			if(i%500000==0)
 					System.out.println(".");
-				if(i%1000==0)
+				if(i%10000==0)
 					System.out.print(".");  
     			
 				//System.out.println("CHECKING PERMUTATION "+ i);
@@ -258,9 +258,9 @@ public class GraphValidator {
     		int i=0;
     		//System.out.println("System Permutation possibile:"+gi.getNumberOfPermutation());
     		for(i=0;i<gi.getNumberOfPermutation();i++){
-    			if(i%10000==0)
+    			if(i%500000==0)
 					System.out.println(".");
-				if(i%1000==0)
+				if(i%10000==0)
 					System.out.print(".");  
     			
 				//System.out.println("CHECKING PERMUTATION "+ i);

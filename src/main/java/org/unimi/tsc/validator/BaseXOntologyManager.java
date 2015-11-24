@@ -24,8 +24,8 @@ public class BaseXOntologyManager{
 	private final String USERNAME;
 	private final String ADDRESS;
 	private final String DBNAME;
-	private BaseXClient c=null;
-	
+	static private BaseXClient c=null;
+	//static private BaseXClient c; 
 	// private BaseXClient session;
 
 	/**
@@ -43,7 +43,9 @@ public class BaseXOntologyManager{
 		this.USERNAME = username;
 		this.PASSWORD = password;
 		this.DBNAME = dbName;
-		//this.c = this.getOpenConnection();
+		if(c==null)
+		BaseXOntologyManager.c = this.getOpenConnection();
+		
 	}
 
 	/**
@@ -64,6 +66,7 @@ public class BaseXOntologyManager{
 		BaseXClient client;
 		//if(c==null)
 		 client = this.getOpenConnection();
+		//BaseXClient client=c;
 		//else
 		//	client=this.c;
 
@@ -79,18 +82,21 @@ public class BaseXOntologyManager{
 					result.add(query.next().replace(".xml", ""));
 				}
 				query.close();
-				// client.close();
+					client.close();
+				 
 				result.remove("TestCategory");
 				result.remove("TestType");
 				result.remove("TestTypeOntology");
+				
 				return result;
 
 			} catch (IOException e) {
 				return null;
 			} finally {
 				try {
-					client.close();
-				} catch (IOException e) {
+					 client.close();
+				 
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -109,15 +115,15 @@ public class BaseXOntologyManager{
 	 * @throws Exception when element doesn't belong to Ontology
 	 */
 	public ArrayList<String> getSubClasses(String keyName, String element, boolean direct) throws Exception {
-		BaseXClient client = this.getOpenConnection();
-
+		//BaseXClient client = this.getOpenConnection();
+		BaseXClient client=BaseXOntologyManager.c;
 		if (client != null) {
 			if(!checkExistence(element))
 				throw new Exception("notFound"+element);
 			ArrayList<String> result = new ArrayList<String>();
 			String input = null;
 
-			if (direct == true) {
+			/*if (direct == true) {
 				// input = "declare variable $element external;" +
 				// "for $n in db:open('Ontology')//*[parent::$element] return $n/name()";
 				
@@ -138,7 +144,18 @@ public class BaseXOntologyManager{
 				
 				input = "for $n in db:open('" + this.DBNAME +"', '/" + keyName + "')//*[ancestor::" + element
 						+ "] return $n/name()";
-			}
+			}*/
+			if(direct) {
+				   input = "for $n in db:open('" +
+				     DBNAME +"', '/" + keyName +
+				     "')/descendant::" + element +
+				     "/child::*/name() return $n";
+				 } else {
+				   input = "for $n in db:open('" +
+				     DBNAME +"', '/" + keyName +
+				     "')//descendant::" + element +
+				     "/descendant::*/name() return $n";
+				 }
 			//System.out.println(input);
 			try {
 				final BaseXClient.Query query = client.query(input);
@@ -150,7 +167,8 @@ public class BaseXOntologyManager{
 				query.close();
 				//Filippo
 				result.add(element);
-				// client.close();
+				 //client.close();
+				 
 
 				return result;
 
@@ -158,8 +176,9 @@ public class BaseXOntologyManager{
 				return null;
 			} finally {
 				try {
-					client.close();
-				} catch (IOException e) {
+					//client.close();
+				 
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -178,7 +197,7 @@ public class BaseXOntologyManager{
 	 */
 	public String nearestCommonAncestor(String firstEl, String secondEl) {
 		BaseXClient client = this.getOpenConnection();
-
+		//BaseXClient client=c;
 		if (client != null) {
 			ArrayList<String> queryResult = new ArrayList<String>();
 			String result = null;
@@ -198,7 +217,8 @@ public class BaseXOntologyManager{
 					queryResult.add(query.next());
 				}
 				query.close();
-				// client.close();
+				 client.close();
+				 
 				
 				if(queryResult != null){
 					result = queryResult.get(0);
@@ -209,8 +229,9 @@ public class BaseXOntologyManager{
 				return null;
 			} finally {
 				try {
-					client.close();
-				} catch (IOException e) {
+					 client.close();
+				 
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -228,6 +249,7 @@ public class BaseXOntologyManager{
 	 */
 	public ArrayList<String> getSuperClasses(String element, boolean direct) {
 		BaseXClient client = this.getOpenConnection();
+		//BaseXClient client=c;
 		if (client != null) {
 			ArrayList<String> result = new ArrayList<String>();
 			String input = null;
@@ -251,7 +273,8 @@ public class BaseXOntologyManager{
 					result.add(query.next());
 				}
 				query.close();
-				// client.close();
+				client.close();
+				 
 
 				return result;
 
@@ -259,8 +282,9 @@ public class BaseXOntologyManager{
 				return null;
 			} finally {
 				try {
-					client.close();
-				} catch (IOException e) {
+					 client.close();
+				 
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -271,7 +295,9 @@ public class BaseXOntologyManager{
 	}
 
 	public boolean checkExistence(String element) {
-		BaseXClient client = this.getOpenConnection();
+		
+		//BaseXClient client = this.getOpenConnection();
+		BaseXClient client=BaseXOntologyManager.c;
 		boolean result = false;
 		int cont = 0;
 		if (client != null) {
@@ -286,18 +312,21 @@ public class BaseXOntologyManager{
 					cont++;
 				}
 				query.close();
-				// client.close();
+				
+				 
 				if (cont > 0) {
 					result = true;
 				}
+				//client.close();
 				return result;
 
 			} catch (IOException e) {
 				return false;
 			} finally {
 				try {
-					client.close();
-				} catch (IOException e) {
+					//client.close();
+				 
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -312,6 +341,7 @@ public class BaseXOntologyManager{
 	 */
 	public ArrayList<String> getAllAssert() {
 		BaseXClient client = this.getOpenConnection();
+		//BaseXClient client=c;
 		ArrayList<String> results = new ArrayList<String>();
 
 		if (client != null) {
@@ -327,7 +357,8 @@ public class BaseXOntologyManager{
 					results.add(query.next());
 				}
 				query.close();
-				// client.close();
+				 client.close();
+				 
 
 				return results;
 
@@ -335,8 +366,9 @@ public class BaseXOntologyManager{
 				return null;
 			} finally {
 				try {
-					client.close();
-				} catch (IOException e) {
+					 client.close();
+				 
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -347,6 +379,7 @@ public class BaseXOntologyManager{
 	}
 	public void simpleReques(){
 		BaseXClient client = this.getOpenConnection();
+		//BaseXClient client=c;
 		if (client != null) {
 			ArrayList<String> result = new ArrayList<String>();
 			String input = null;
@@ -359,7 +392,8 @@ public class BaseXOntologyManager{
 					result.add(query.next());
 				}
 				query.close();
-				// client.close();
+				client.close();
+				 
 
 				for(String toprint:result){
 					System.out.println(toprint);
@@ -368,8 +402,9 @@ public class BaseXOntologyManager{
 				return;
 			} finally {
 				try {
-					client.close();
-				} catch (IOException e) {
+					 client.close();
+				 
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -379,7 +414,8 @@ public class BaseXOntologyManager{
 	}
 	
 	public String getDomain(String elem){
-		BaseXClient client = this.getOpenConnection();
+		//BaseXClient client = this.getOpenConnection();
+		BaseXClient client=BaseXOntologyManager.c;
 		if (client != null) {
 			ArrayList<String> result = new ArrayList<String>();
 			String input = null;
@@ -392,8 +428,9 @@ public class BaseXOntologyManager{
 					result.add(query.next());
 				}
 				query.close();
-				// client.close();
-
+				//client.close();
+				 
+				 
 				for(String toprint:result){
 					//System.out.println(toprint);
 					return toprint;
@@ -402,8 +439,10 @@ public class BaseXOntologyManager{
 				return null;
 			} finally {
 				try {
-					client.close();
-				} catch (IOException e) {
+					//client.close();
+				 
+				
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

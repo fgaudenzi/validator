@@ -19,6 +19,8 @@ public class BasexFactory {
 			    }
 			public static String getHost() {
 				// TODO Auto-generated method stub
-				return "192.168.1.74";
+				//return "192.168.1.74";
+				return "localhost";
+				//return "172.25.27.17";
 			}
 }

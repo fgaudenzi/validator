@@ -12,13 +12,13 @@ import java.util.ArrayList;
 	    public void addChild(Tree t){
 	    	this.node.add(t);
 	    }
-	    public boolean isSon(String v){
+	    public boolean hasSon(String v){
 	        boolean found=false;
 	    	for(Tree t:node){
 	    		if(t.getValue().equalsIgnoreCase(v))
 	    			return true;
 	    		else{
-	    			found=t.isSon(v);
+	    			found=t.hasSon(v);
 	    			if(found==true)
 	    				return true;
 	    		}

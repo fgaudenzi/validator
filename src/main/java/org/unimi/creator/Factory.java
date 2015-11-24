@@ -8,6 +8,9 @@ import org.unimi.utilities.Utilities;
 public class Factory {
 
 	public static void main(String[] args)  throws Exception{
+		String d;
+		d="/Users/iridium/Downloads/TEST_PAPER/deep-";
+		int[] array={10,15,12};
 		long maxHeapSize = Runtime.getRuntime().maxMemory();
 		long freeHeapSize = Runtime.getRuntime().freeMemory();
 		long totalHeapSize = Runtime.getRuntime().totalMemory();
@@ -15,15 +18,18 @@ public class Factory {
 		System.out.println("Free Heap Size = " + freeHeapSize+ " byte");
 		System.out.println("Total Heap Size = " + totalHeapSize+ " byte");
 		//- See more at: http://www.appuntisoftware.it/come-dimensionare-lheap-size-di-unapplicazione-java/#sthash.Hkaze0GG.dpuf
-		Factory.create("/Users/iridium/Downloads/TEST_PAPER");
+		for(int i=0;i<array.length;i++){
+			System.out.println("\n\n\n\n DEEP="+array[i]+" \n\n\n");
+		Factory.create(d+String.valueOf(array[i]),array[i]);
+		}
 	}
 	
-	public static void create(String baseDir) throws Exception{
-		for(int i=8;i<=8;i=i+5){
+	public static void create(String baseDir,int deep) throws Exception{
+		for(int i=5;i<=10;i++){
 			String dir=baseDir+"/CM-"+String.valueOf(i);
 			Utilities.createDir(dir);
-			TemplateFactory.createTemplate(i, 4, 5,dir);
-			for(int k=0;k<10;k++){
+			TemplateFactory.createTemplate(i, deep-1, deep,dir);
+			for(int k=0;k<3;k++){
 				if(!InstanceFactory.createInstance("", dir+"/TemplateToC.xml", dir+"/TemplateModel.xml", dir+"/TemplateEvidence.xml", null,dir,String.valueOf(k))){
 					k=k-1;
 					System.out.println("ERRORE NELLA CREAZIONE DELL'ISTANZA - repeat operation");

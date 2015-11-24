@@ -15,12 +15,19 @@ import org.unimi.tsc.validator.ToCValidator;
 public class Validator {
 	
 	public static void main(String[] args)  throws Exception{
+		String dd;
+		dd="/Users/iridium/Downloads/TEST_PAPER/deep-";
+		int[] array={10,15,12};
 		
+		for(int j=0;j<array.length;j++){
+			String d=dd+String.valueOf(array[j])+"/";
+	for(int z=5;z<=10;z++){
 		
-		for(int i=0;i<10;i++){
+		String nfat=String.valueOf(z);
+		System.out.println("\n\n\n\n\n N="+nfat+"\n\n\n");
+		for(int i=0;i<3;i++){
 		 long init = System.nanoTime();
-		 System.out.println(init);
-		 FileReader reader = new FileReader("/Users/iridium/Downloads/TEST_PAPER/CM-8/root-"+String.valueOf(i)+".pt");
+		 FileReader reader = new FileReader(d+"CM-"+nfat+"/root-"+String.valueOf(i)+".pt");
          BufferedReader bufferedReader = new BufferedReader(reader);
 
          String line,root="";
@@ -29,27 +36,19 @@ public class Validator {
         	root=line;
          };
          reader.close();
-         //root="n256";
-			ModelEvidenceValidator mev=new ModelEvidenceValidator(new GraphValidator("/Users/iridium/Downloads/TEST_PAPER/CM-8/IstanceGraph-"+String.valueOf(i)+".xml",root),new  EvidenceValidator("/Users/iridium/Downloads/TEST_PAPER/CM-8/IstanceEvidence-"+String.valueOf(i)+".xml"));
-    		System.out.println("RISULTATO MODEL+EVIDENCE:"+mev.validate("/Users/iridium/Downloads/TEST_PAPER/CM-8/TemplateModel.xml", "n0","/Users/iridium/Downloads/TEST_PAPER/CM-8/TemplateEvidence.xml"));
-    		/*GraphValidator validator = new GraphValidator("/Users/iridium/Documents/workspace/validator/nuovoGrafo.xml","n69");
-    		//GraphValidator validator2 = new GraphValidator("/Users/iridium/Documents/workspace/validator/graphT.xml","n0");
-    		//boolean app=false;
-    		boolean appg=validator.compareModel("/Users/iridium/Documents/workspace/validator/graphT2.xml", "n0");
-			System.out.println("RISULTATO MODELLO:"+appg);
-			
-			
-			EvidenceValidator ev= new  EvidenceValidator("/Users/iridium/Documents/workspace/validator/nuovoEvidence.xml");
-			boolean appe=ev.CompareEvidences("/Users/iridium/Documents/workspace/validator/evidenceTemplate.xml");
-			System.out.println("RISULTATO EVIDENZE:"+appe);*/
-			 
-			ToCValidator tc=new ToCValidator("/Users/iridium/Downloads/TEST_PAPER/CM-8/IstanceToC-"+String.valueOf(i)+".xml");
-			boolean appt= tc.compareTocs("/Users/iridium/Downloads/TEST_PAPER/CM-8/TemplateToC.xml");
+		 System.out.println(init);
+		 
+			ModelEvidenceValidator mev=new ModelEvidenceValidator(new GraphValidator(d+"CM-"+nfat+"/IstanceGraph-"+String.valueOf(i)+".xml",root),new  EvidenceValidator(d+"CM-"+nfat+"/IstanceEvidence-"+String.valueOf(i)+".xml"));
+			System.out.println("RISULTATO MODEL+EVIDENCE:"+mev.validate(d+"CM-"+nfat+"/TemplateModel.xml", "n0",d+"CM-"+nfat+"/TemplateEvidence.xml"));
+			String timeC="INIT TOC:"+String.valueOf(System.nanoTime()/1000)+"\n";	
+			ToCValidator tc=new ToCValidator(d+"CM-"+nfat+"/IstanceToC-"+String.valueOf(i)+".xml");
+			boolean appt= tc.compareTocs(d+"CM-"+nfat+"/TemplateToC.xml");
+			timeC+="END TOC:"+String.valueOf(System.nanoTime()/1000)+"\n";	
 			System.out.println("RISULTATO TOC:"+appt);
 			long end= System.nanoTime();
 			System.out.println(end);
 			System.out.println(String.valueOf(end-init));
-			FileWriter rootwriter = new FileWriter("/Users/iridium/Downloads/TEST_PAPER/CM-8/result-"+String.valueOf(i)+".txt",false);
+			FileWriter rootwriter = new FileWriter(d+"CM-"+nfat+"/result-"+String.valueOf(i)+".txt",false);
 	        rootwriter.write(String.valueOf((end-init)/1000)+"ms");
 	        rootwriter.close();
 			for(int k=0;k<10;k++)
@@ -58,6 +57,8 @@ public class Validator {
 			Thread.sleep(100);
 			
 		}
+	}
+	}
 	}
 
 }
