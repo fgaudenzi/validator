@@ -17,11 +17,11 @@ public class Validator {
 	public static void main(String[] args)  throws Exception{
 		String dd;
 		dd="/Users/iridium/Downloads/TEST_PAPER/deep-";
-		int[] array={10,15,12};
+		int[] array={10,15,5,12};
 		
-		for(int j=0;j<array.length;j++){
+		for(int j=2;j<array.length;j++){
 			String d=dd+String.valueOf(array[j])+"/";
-	for(int z=5;z<=10;z++){
+	for(int z=5;z<=9;z++){
 		
 		String nfat=String.valueOf(z);
 		System.out.println("\n\n\n\n\n N="+nfat+"\n\n\n");
