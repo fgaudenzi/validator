@@ -286,8 +286,66 @@ public class graphSTS {
 	}
 
 	public ArrayList<ArrayList<Vertex>> getOrdered() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<ArrayList<Vertex>> ordered=new ArrayList<ArrayList<Vertex>>();
+		return ordered;
+		//return null;
+	}
+	public ArrayList<Integer> getPermutationOrdered(){
+		ArrayList<ArrayList<Vertex>> all=new ArrayList<ArrayList<Vertex>>();
+		ArrayList<ArrayList<Vertex>> allOriginal=this.getGraphI(-1);
+		for(ArrayList<Vertex> p:allOriginal){
+			ArrayList<Vertex> app=new ArrayList<Vertex>();
+			Graph graph = new TinkerGraph();
+			
+			for(Vertex v:p){
+				Vertex appv=graph.addVertex(v.getId().toString());
+				appv.setProperty("mechanism", v.getProperty("mechanism").toString());
+				app.add(appv);
+			}
+			all.add(app);
+		}
+		
+		int[] dispo=new int[all.size()];
+		for(int i=0;i<dispo.length;i++)
+			dispo[i]=i;
+		for(int i=0;i<all.size();i++){
+			ArrayList<Vertex> vs=all.get(i);
+			for(int k=i+1;k<all.size()-1;k++){
+				ArrayList<Vertex> vc=all.get(k);
+				for(int j=0;j<vc.size()&&j<vs.size();j++){
+					String mfrom=vs.get(j).getProperty("mechanism").toString();
+					String mto=vc.get(j).getProperty("mechanism").toString();
+					if(Mechanism.compareMechanism(mto, mfrom)){
+						/*
+						 * String a = words.get(0);
+words.set(0, words.get(words.size() - 1));
+words.set(words.size() - 1, a)
+						 */
+						int app=dispo[i];
+						dispo[i]=dispo[j];
+						dispo[j]=app;
+						all.set(i, vc);
+						all.set(j, vs);
+						vs=vc;
+					}
+				}
+			}
+		}
+		
+		ArrayList<Integer> result=new ArrayList<Integer>();
+		for(int i=0;i<dispo.length;i++){
+			result.add(new Integer(dispo[i]));
+		}
+		return result;
+	}
+
+	public ArrayList<ArrayList<Vertex>> getPathbyPerm(ArrayList<Integer> ordered) {
+		ArrayList<ArrayList<Vertex>> all=this.getGraphI(-1);
+		ArrayList<ArrayList<Vertex>> result=new ArrayList<ArrayList<Vertex>>();
+		for(int i=0;i<ordered.size();i++){
+			result.add(all.get(ordered.get(i)));
+		}
+		return result;
 	}
 
 

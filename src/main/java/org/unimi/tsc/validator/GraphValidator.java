@@ -33,6 +33,7 @@ public class GraphValidator {
     	public GraphValidator(String ci,String root) throws IOException{
     		System.out.println("CHARGING THE GRAPH");
     		this.gi=new graphSTS(ci,root);
+    		ArrayList<ArrayList<Vertex>> v=gi.getGraphI(-1);
     		System.out.println("CREATED GRAPH IN RAM");
     	}
     	public ArrayList<Integer> compareModelEmp1(String ct,String root){
@@ -386,9 +387,10 @@ public class GraphValidator {
     		}*/
     		System.out.println("CARDINALITY - OK");
     		
-    		
-    		ArrayList<ArrayList<Vertex>> instancePaths=gi.getOrdered();
-    		ArrayList<ArrayList<Vertex>> templatePaths=gt.getOrdered();
+    		ArrayList<Integer> iordered=gi.getPermutationOrdered();
+    		ArrayList<Integer> tordered=gt.getPermutationOrdered();
+    		ArrayList<ArrayList<Vertex>> instancePaths=gi.getPathbyPerm(iordered);
+    		ArrayList<ArrayList<Vertex>> templatePaths=gt.getPathbyPerm(tordered);
     		//ArrayList<ArrayList<Vertex>> templatePaths=gt.getGraphI(-1);
     		int i=0;
     		
@@ -409,9 +411,86 @@ public class GraphValidator {
     				ArrayList<Vertex> instance=instancePaths.get(z);
     				result=comparePath(instance,template);
     				if(result){
-    					bindT[k]=z;
+    					bindT[k]=iordered.get(z).intValue();
     					bindI[z]=false;
     					break;
+    				}
+    				}
+    				}
+    				 				
+    			}
+    			
+    			for(int k=0;k<bindT.length;k++){
+    				for(int j=0;j<tordered.size();j++){
+    				if(tordered.get(j).intValue()==k){
+    					pIndex.add(new Integer(bindT[j]));
+    					System.out.println("Path "+k+" con Path"+bindT[k]);
+    				}
+    				}
+    			}
+    			/*for(Integer bt:bindT){
+    				int j=0;
+    				pIndex.add(bt);
+    				System.out.println("Path "+j+" con Path"+bt);
+    				j++;
+    			}
+    			//pIndex*/
+    			return pIndex;
+			
+		}
+		
+		
+		
+		
+		public ArrayList<Integer> tester(String ct,String root){
+    		ArrayList<Integer> pIndex=new ArrayList<Integer>();
+    		graphSTS gt;
+    		Boolean result=false;
+    		try {
+				gt=new graphSTS(ct,root);
+			} catch (IOException e) {
+				return pIndex;
+			}
+    		System.out.println("CREATED GRAPH TEMPLATE IN RAM");
+    		Vertex gtRoot = gt.getRoot();
+    		Vertex giRoot = gi.getRoot();	
+ //   		--- Comparison Mechanism ROOT 	---
+    		if(!Mechanism.compareMechanism(gtRoot.getProperty("mechanism").toString(),giRoot.getProperty("mechanism").toString()))
+    			return pIndex;
+    		System.out.println("ROOT - OK");
+ //			--- Check Cardinality 			---  		
+    		/*if(gt.getGraphI().entrySet().size()!=gi.getGraphI().size()){
+    			return false;
+    		}*/
+    		System.out.println("CARDINALITY - OK");
+    		
+    		
+    		
+    		
+    		ArrayList<ArrayList<Vertex>> templatePaths=gt.getGraphI(-1);
+    		int i=0;
+    		
+    			ArrayList<ArrayList<Vertex>> instancePaths=gi.getGraphI(-1);
+    			boolean[] bindI=new boolean[instancePaths.size()];
+    			for(int k=0;k<bindI.length;k++){
+    				bindI[k]=true;
+    			}
+    			int[] bindT=new int[templatePaths.size()];
+    			for(int k=0;k<bindT.length;k++){
+    				bindT[k]=-1;
+    			}
+    			for(int k=0;k<templatePaths.size();k++){
+    				ArrayList<Vertex> template=templatePaths.get(k);
+    				for(int z=0;z<instancePaths.size();z++){
+    				//controllo numero di path??
+    				if(bindI[z]){
+    				ArrayList<Vertex> instance=instancePaths.get(z);
+    				result=comparePath(instance,template);
+    				if(result){
+    					System.out.println("BINDING BUONO path-"+k+"   path-"+z);
+    					bindT[k]=z;
+    					//bindI[z]=false;
+    					//break;
     				}
     				}
     				}
@@ -423,9 +502,10 @@ public class GraphValidator {
     				System.out.println("Path "+j+" con Path"+bt);
     			}
     			//pIndex
-    			return pIndex;ted method stub
-			return null;
-		}
+    			return pIndex;
+    		}
+    	
+    	
 
 		
 }

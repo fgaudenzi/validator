@@ -17,11 +17,11 @@ public class Validator {
 	public static void main(String[] args)  throws Exception{
 		String dd;
 		dd="/Users/iridium/Downloads/TEST_PAPER/deep-";
-		int[] array={10,15,5,12};
+		int[] array={5,10,12,15};
 		
-		for(int j=2;j<array.length;j++){
+		for(int j=0;j<array.length;j++){
 			String d=dd+String.valueOf(array[j])+"/";
-	for(int z=5;z<=9;z++){
+	for(int z=5;z<=10;z++){
 		
 		String nfat=String.valueOf(z);
 		System.out.println("\n\n\n\n\n N="+nfat+"\n\n\n");
@@ -39,7 +39,7 @@ public class Validator {
 		 System.out.println(init);
 		 
 			ModelEvidenceValidator mev=new ModelEvidenceValidator(new GraphValidator(d+"CM-"+nfat+"/IstanceGraph-"+String.valueOf(i)+".xml",root),new  EvidenceValidator(d+"CM-"+nfat+"/IstanceEvidence-"+String.valueOf(i)+".xml"));
-			System.out.println("RISULTATO MODEL+EVIDENCE:"+mev.validate(d+"CM-"+nfat+"/TemplateModel.xml", "n0",d+"CM-"+nfat+"/TemplateEvidence.xml"));
+			System.out.println("RISULTATO MODEL+EVIDENCE:"+mev.validateEmp2(d+"CM-"+nfat+"/TemplateModel.xml", "n0",d+"CM-"+nfat+"/TemplateEvidence.xml"));
 			String timeC="INIT TOC:"+String.valueOf(System.nanoTime()/1000)+"\n";	
 			ToCValidator tc=new ToCValidator(d+"CM-"+nfat+"/IstanceToC-"+String.valueOf(i)+".xml");
 			boolean appt= tc.compareTocs(d+"CM-"+nfat+"/TemplateToC.xml");
@@ -48,9 +48,9 @@ public class Validator {
 			long end= System.nanoTime();
 			System.out.println(end);
 			System.out.println(String.valueOf(end-init));
-			FileWriter rootwriter = new FileWriter(d+"CM-"+nfat+"/result-"+String.valueOf(i)+".txt",false);
-	        rootwriter.write(String.valueOf((end-init)/1000)+"ms");
-	        rootwriter.close();
+			//FileWriter rootwriter = new FileWriter(d+"CM-"+nfat+"/result-"+String.valueOf(i)+".txt",false);
+	        //rootwriter.write(String.valueOf((end-init)/1000)+"ms");
+	        //rootwriter.close();
 			for(int k=0;k<10;k++)
 				System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 			
