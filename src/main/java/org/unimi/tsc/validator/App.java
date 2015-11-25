@@ -41,7 +41,7 @@ public class App
     	//GraphMLReader.inputGraph(graph, in);
     	try {
     		ModelEvidenceValidator mev=new ModelEvidenceValidator(new GraphValidator("/Users/iridium/Documents/workspace/validator/nuovoGrafo.xml","n59"),new  EvidenceValidator("/Users/iridium/Documents/workspace/validator/nuovoEvidence.xml"));
-    		System.out.println("RISULTATO MODEL+EVIDENCE:"+mev.validate("/Users/iridium/Documents/workspace/validator/graphT2.xml", "n0","/Users/iridium/Documents/workspace/validator/evidenceTemplate.xml"));
+    		System.out.println("RISULTATO MODEL+EVIDENCE:"+mev.validateEmp1("/Users/iridium/Documents/workspace/validator/graphT2.xml", "n0","/Users/iridium/Documents/workspace/validator/evidenceTemplate.xml"));
     		/*GraphValidator validator = new GraphValidator("/Users/iridium/Documents/workspace/validator/nuovoGrafo.xml","n69");
     		//GraphValidator validator2 = new GraphValidator("/Users/iridium/Documents/workspace/validator/graphT.xml","n0");
     		//boolean app=false;

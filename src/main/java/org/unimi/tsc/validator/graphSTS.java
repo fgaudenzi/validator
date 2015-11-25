@@ -285,6 +285,11 @@ public class graphSTS {
 		return true;
 	}
 
+	public ArrayList<ArrayList<Vertex>> getOrdered() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 }
