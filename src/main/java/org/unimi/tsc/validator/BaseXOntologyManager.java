@@ -156,7 +156,7 @@ public class BaseXOntologyManager{
 				     "')//descendant::" + element +
 				     "/descendant::*/name() return $n";
 				 }
-			//System.out.println(input);
+			//System.out.println("QUERY"+input);
 			try {
 				final BaseXClient.Query query = client.query(input);
 				// query.bind("$element", element);
@@ -303,7 +303,7 @@ public class BaseXOntologyManager{
 		if (client != null) {
 			String input = "for $n in db:open('" + this.DBNAME +"')//" + element
 					+ " return $n/name()";
-
+			//System.out.println(input);
 			try {
 				final BaseXClient.Query query = client.query(input);
 				query.bind("$element", element);
@@ -321,6 +321,7 @@ public class BaseXOntologyManager{
 				return result;
 
 			} catch (IOException e) {
+				e.printStackTrace();
 				return false;
 			} finally {
 				try {

@@ -226,11 +226,17 @@ public class TocFactory {
 		//BaseXOntologyManager app=BasexFactory.getBasex();
 		ArrayList<String> result2=null;
 		try {
-			result2 = app.getSubClasses("/", "mechanism-d4-b0", false);
+			result2 = app.getSubClasses("/", "M", false);
 			Random randomG = new Random();
-			int index=randomG.nextInt(result2.size());
+			int index;
+			if(result2.size()==1)
+				index=randomG.nextInt(result2.size());
+			else
+				index=randomG.nextInt(result2.size()-1);
+			System.out.println("TESTER"+index);
 			return result2.get(index); 
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("ERRORE:"+e.getMessage());
 			// TODO Auto-generated catch block
 			return null;

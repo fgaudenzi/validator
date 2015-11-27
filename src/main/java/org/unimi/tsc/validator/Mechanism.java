@@ -30,6 +30,6 @@ public class Mechanism {
 	}
 	public static void main( String[] args )
     {
-		compareMechanism("bellissimo","proud");
+		System.out.println(compareMechanism("mechanism-d4-b0","mechanism-d4-b0"));
     }
 }

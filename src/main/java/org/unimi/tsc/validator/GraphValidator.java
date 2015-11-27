@@ -442,70 +442,9 @@ public class GraphValidator {
 		
 		
 		
-		public ArrayList<Integer> tester(String ct,String root){
-    		ArrayList<Integer> pIndex=new ArrayList<Integer>();
-    		graphSTS gt;
-    		Boolean result=false;
-    		try {
-				gt=new graphSTS(ct,root);
-			} catch (IOException e) {
-				return pIndex;
-			}
-    		System.out.println("CREATED GRAPH TEMPLATE IN RAM");
-    		Vertex gtRoot = gt.getRoot();
-    		Vertex giRoot = gi.getRoot();	
- //   		--- Comparison Mechanism ROOT 	---
-    		if(!Mechanism.compareMechanism(gtRoot.getProperty("mechanism").toString(),giRoot.getProperty("mechanism").toString()))
-    			return pIndex;
-    		System.out.println("ROOT - OK");
- //			--- Check Cardinality 			---  		
-    		/*if(gt.getGraphI().entrySet().size()!=gi.getGraphI().size()){
-    			return false;
-    		}*/
-    		System.out.println("CARDINALITY - OK");
-    		
-    		
-    		
-    		
-    		ArrayList<ArrayList<Vertex>> templatePaths=gt.getGraphI(-1);
-    		int i=0;
-    		
-    			ArrayList<ArrayList<Vertex>> instancePaths=gi.getGraphI(-1);
-    			boolean[] bindI=new boolean[instancePaths.size()];
-    			for(int k=0;k<bindI.length;k++){
-    				bindI[k]=true;
-    			}
-    			int[] bindT=new int[templatePaths.size()];
-    			for(int k=0;k<bindT.length;k++){
-    				bindT[k]=-1;
-    			}
-    			for(int k=0;k<templatePaths.size();k++){
-    				ArrayList<Vertex> template=templatePaths.get(k);
-    				for(int z=0;z<instancePaths.size();z++){
-    				//controllo numero di path??
-    				if(bindI[z]){
-    				ArrayList<Vertex> instance=instancePaths.get(z);
-    				result=comparePath(instance,template);
-    				if(result){
-    					System.out.println("BINDING BUONO path-"+k+"   path-"+z);
-    					bindT[k]=z;
-    					//bindI[z]=false;
-    					//break;
-    				}
-    				}
-    				}
-    				 				
-    			}
-    			for(Integer bt:bindT){
-    				int j=0;
-    				pIndex.add(bt);
-    				System.out.println("Path "+j+" con Path"+bt);
-    			}
-    			//pIndex
-    			return pIndex;
-    		}
-    	
-    	
+		
+		
+
 
 		
 }
